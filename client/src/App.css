@@ -1,0 +1,27 @@
+* {
+  margin: 0;
+  padding: 0;
+}
+
+.dashboard {
+  background-image: url(./Images/carrepairing.jpg);
+  max-width: 100vw;
+  height: 80vh;
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+}
+
+.dashboard h1{
+    font-size: 35px;
+    color: rgb(24, 14, 172);
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    text-shadow: .5px .5px .4px white;
+}
+
+
+

@@ -2,53 +2,71 @@ const jwt = require("jsonwebtoken");
 const db = require("../mySql/mySqlConnection");
 
 const userLoginController = (req, res) => {
-  const { email, password } = req.body;
-  let select = `SELECT email , password FROM newTable WHERE email = '${email}' `;
+  try {
+    const { email, password } = req.body;
+    let select = `SELECT username , email , password , number , address , accesstype accesstype FROM singupdata WHERE email = '${email}'`;
 
-  db.query(select, (error, result) => {
-    result = result?.[0];
-    let msgObject = { success: "false", msg: "", result: "" };
-    msgObject = (() => {
-      if (error) return res.send(error);
-      if (!result) return { ...msgObject, msg: "user does not exists" };
-      if (result.email !== email)
-        return { ...msgObject, msg: "email and password is not matched" };
-      if (result.password !== password)
-        return { ...msgObject, msg: "email and password is not matched" };
-
+    db.query(select, (error, result) => {
+      result = result?.[0];
+      if (!result)
+        return res.send({ success: false, msg: "user does not exists" });
+      if (result.email !== email) {
+        return res.send({
+          success: false,
+          msg: "email and password is not matched",
+        });
+      }
+      if (result.password !== password) {
+        return res.send({
+          success: false,
+          msg: "email and password is not matched",
+        });
+      }
       const token = jwt.sign(email, "iamusingjsonwebtoken");
-
-      return {
-        success: "true",
+      console.log(token);
+      res.send({
+        success: true,
         msg: "Login successfully",
         token,
-        result: result
-      };
-    })();
-
-    res.status(401).send(msgObject);
-  });
+        result,
+      });
+    });
+  } catch (error) {
+    resstatus(401).send({
+      success: false,
+      msg: "Some error is occured",
+      error,
+    });
+    console.log(error);
+  }
 };
 
 const userRegisterController = (req, res) => {
-  const { email, password } = req.body;
-  let msgObject = { success: "false", mag: "", result: "" };
-  let insertData = `INSERT INTO newTable (email , password) VALUES ('${email}' , '${password}')`;
+  try {
+    const { username, email, password, number, address, accesstype } = req.body;
+    console.log(req.body);
+    let msgObject = { success: "false", mag: "", result: "" };
+    let insertData = `INSERT INTO singupdata (username , email , password , number , address , accesstype) VALUES ('${username}' ,'${email}' , '${password}', '${number}' ,'${address}','${accesstype}')`;
 
-  db.query(insertData, (error, result) => {
-    result = result?.[0];
-    console.log(result);
-    msgObject = (() => {
-      if (error) return res.send(error);
-      return {
+    db.query(insertData, (error, result) => {
+      console.log(error);
+      console.log(!result);
+      if (!result)
+        return res.send({
+          success: "false",
+          msg: "data not submitted",
+          error,
+        });
+
+      res.status(200).send({
         success: "true",
-        msg: "Login successfully",
+        msg: "User registered successfully",
         result: result,
-      };
-    })();
-
-    res.status(200).send(msgObject);
-  });
+      });
+    });
+  } catch (error) {
+    console.log(error);
+  }
 };
 
 module.exports = { userLoginController, userRegisterController };

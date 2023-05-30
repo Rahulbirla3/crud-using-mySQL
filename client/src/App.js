@@ -1,25 +1,23 @@
-import React from 'react';
-import { useSelector, useDispatch } from 'react-redux';
-import { changeName } from './Reducers/print';
-import { taskApi } from './services/taskApi';
-import TaskManager from './services/TaskManager';
+import React from "react";
+import { BrowserRouter, useNavigate } from "react-router-dom";
+import "./App.css";
+import Navbar from "./components/Navbar";
+import Error from "./components/Error";
+import RouterComponent from "./router/RouterComponent";
+import "./App.css";
 
 const App = () => {
-
-  console.log(taskApi);
-
-  const dispatch = useDispatch();
-
-  const data = useSelector((state) => state.printData)
-  console.log(data);
+  
 
   return (
     <>
-      <div>{data.name}</div>
-      <button onClick={() => dispatch(changeName())} >change</button>
-      <TaskManager />
+      <BrowserRouter>
+        <Navbar />
+        {/* This is Router component */}
+        <RouterComponent />
+      </BrowserRouter>
     </>
-  )
-}
+  );
+};
 
-export default App
+export default App;
