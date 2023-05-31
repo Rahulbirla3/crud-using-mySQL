@@ -1,6 +1,6 @@
 import React from "react";
 import { Outlet, Navigate } from "react-router-dom";
-import { paths } from "./usePath";
+import { paths } from "./RouterReducer";
 
 const ProtectedRoute = () => {
   let jwt = localStorage.getItem("token");
@@ -11,7 +11,3 @@ const ProtectedRoute = () => {
 };
 
 export default ProtectedRoute;
- 
-
-
-

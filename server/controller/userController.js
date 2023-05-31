@@ -7,16 +7,16 @@ const userLoginController = (req, res) => {
     let select = `SELECT username , email , password , number , address , accesstype accesstype FROM singupdata WHERE email = '${email}'`;
 
     db.query(select, (error, result) => {
-      result = result?.[0];
       if (!result)
-        return res.send({ success: false, msg: "user does not exists" });
-      if (result.email !== email) {
+        return res.send({ success: false, msg: "user does not exists", error });
+      if (result[0]?.email !== email) {
         return res.send({
           success: false,
           msg: "email and password is not matched",
         });
       }
-      if (result.password !== password) {
+      console.log(password);
+      if (result[0]?.password !== password) {
         return res.send({
           success: false,
           msg: "email and password is not matched",

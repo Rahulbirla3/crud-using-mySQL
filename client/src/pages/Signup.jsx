@@ -13,9 +13,9 @@ import {
   Typography,
 } from "@mui/material";
 import React from "react";
+import { paths } from "../router/RouterReducer";
 import { Link } from "react-router-dom";
 import { useForm } from "react-hook-form";
-import { paths } from "../router/usePath";
 
 function Signup() {
   const { register, handleSubmit } = useForm();

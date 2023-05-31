@@ -10,15 +10,21 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import React from "react";
+import React, { useContext } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
-import usePath from "../router/usePath";
-import { paths } from "../router/usePath";
+import { paths } from "../router/RouterReducer";
+import RouterContext from "../router/RouterContext";
 
 function Login() {
   const navigate = useNavigate();
   const { register, handleSubmit } = useForm();
+
+  const accesstype = localStorage.getItem("accesstype");
+  const token = localStorage.getItem("token");
+
+  const { state, updateData } = useContext(RouterContext);
+  const { filterAllPath, filterCommonPath } = state;
 
   const onSubmit = async (data) => {
     // console.log(data);
@@ -34,10 +40,12 @@ function Login() {
       });
       const respose = await apiData.json();
       if (!respose.success) return alert(respose.msg);
-      localStorage.setItem("token", respose.token);
-      localStorage.setItem("accesstype", respose.result?.accesstype);
-      localStorage.setItem("email", respose.result?.email);
 
+      console.log(respose);
+      updateData(respose.token, respose.result[0]?.accesstype);
+      localStorage.setItem("token", respose.token);
+      localStorage.setItem("accesstype", respose.result[0]?.accesstype);
+      localStorage.setItem("email", respose.result[0]?.email);
       navigate(`${paths.Root}`);
     } catch (error) {
       console.log(error);

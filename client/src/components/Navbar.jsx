@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
@@ -13,8 +13,9 @@ import Button from "@mui/material/Button";
 import Tooltip from "@mui/material/Tooltip";
 import MenuItem from "@mui/material/MenuItem";
 import AdbIcon from "@mui/icons-material/Adb";
-import paths from "../router/usePath";
-import usePath from "../router/usePath";
+import { useContext } from "react";
+import RouterContext from "../router/RouterContext";
+import { paths } from "../router/RouterReducer";
 
 const pages = ["Products", "Pricing", "Blog"];
 const settings = ["Profile", "Account", "Dashboard", "Logout"];
@@ -38,11 +39,20 @@ function Navbar() {
   const accesstype = localStorage?.getItem("accesstype");
   const token = localStorage?.getItem("token");
 
-  const { allPath, commonPath } = usePath(token, accesstype);
+  useEffect(() => {
+    updateData(token, accesstype);
+  }, []);
 
-  // console.log(commonPath);
-  // console.log(allPath);
-  // console.log(paths);
+  const { state, updateData } = useContext(RouterContext);
+  const { filterAllPath, filterCommonPath } = state;
+
+  const handleLogout = () => {
+    localStorage.clear();
+    let accesstype = localStorage?.getItem("accesstype");
+    let token = localStorage?.getItem("token");
+    updateData(token, accesstype);
+    navigate(paths.Login);
+  };
 
   return (
     <AppBar position="static">
@@ -132,7 +142,7 @@ function Navbar() {
           </Typography>
           <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
             {/* Protected routes */}
-            {allPath?.map((val, index) => (
+            {filterAllPath?.map((val, index) => (
               <NavLink to={val.path}>
                 <Button
                   key={index}
@@ -144,30 +154,23 @@ function Navbar() {
               </NavLink>
             ))}
             {/* Not protected Routes */}
-            {commonPath?.map((path, index) =>
+            {filterCommonPath?.map((path, index) => (
               // if dashbord not show navbar button because for dashboard we use logo
-              path.name === "Dashbord" ? (
-                ""
-              ) : (
-                <NavLink to={path.path}>
-                  <Button
-                    key={index}
-                    onClick={handleCloseNavMenu}
-                    sx={{ my: 2, color: "white", display: "block" }}
-                  >
-                    {path.name}
-                  </Button>
-                </NavLink>
-              )
-            )}
+              <NavLink to={path.path}>
+                <Button
+                  key={index}
+                  onClick={handleCloseNavMenu}
+                  sx={{ my: 2, color: "white", display: "block" }}
+                >
+                  {path.name}
+                </Button>
+              </NavLink>
+            ))}
           </Box>
           {token ? (
             <Box>
               <Button
-                onClick={() => {
-                  localStorage.clear();
-                  navigate(paths.Login);
-                }}
+                onClick={handleLogout}
                 sx={{ my: 2, color: "white", display: "block" }}
               >
                 Logout

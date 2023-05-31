@@ -1,31 +1,32 @@
-import React from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { Route, Routes } from "react-router-dom";
 // import Navbar from "../components/Navbar";
 import ProtectedRoute from "./ProtectedRoute";
 import Error from "../components/Error";
-import usePath from "./usePath";
+import RouterContext from "./RouterContext";
 //
 const RouterComponent = () => {
-  const accesstype = localStorage?.getItem("accesstype");
-  const token = localStorage?.getItem("token");
+  const accesstype = localStorage.getItem("accesstype");
+  const token = localStorage.getItem("token");
 
-  console.log(accesstype);
+  const { state, updateData } = useContext(RouterContext);
+  const { filterAllPath, filterCommonPath } = state;
 
-  const { allPath, commonPath } = usePath({ token, accesstype });
-
-  console.log(allPath, commonPath);
+  useEffect(() => {
+    updateData(token, accesstype);
+  }, [accesstype, token]);
 
   return (
     <>
       <Routes>
         <Route element={<ProtectedRoute />}>
-          {allPath.map((v, index) => {
+          {filterAllPath?.map((v, index) => {
             return <Route key={index} path={v.path} element={v.page} />;
           })}
         </Route>
 
         {/* this routes is not protected */}
-        {commonPath.map((v, index) => {
+        {filterCommonPath?.map((v, index) => {
           return <Route key={index} path={v.path} element={v.page} />;
         })}
 
