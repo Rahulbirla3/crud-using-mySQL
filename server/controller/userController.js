@@ -44,14 +44,12 @@ const userLoginController = (req, res) => {
 const userRegisterController = (req, res) => {
   try {
     const { username, email, password, number, address, accesstype } = req.body;
-    console.log(req.body);
-    let msgObject = { success: "false", mag: "", result: "" };
+    // console.log(req.body);
     let insertData = `INSERT INTO singupdata (username , email , password , number , address , accesstype) VALUES ('${username}' ,'${email}' , '${password}', '${number}' ,'${address}','${accesstype}')`;
 
     db.query(insertData, (error, result) => {
-      console.log(error);
-      console.log(!result);
-      if (!result)
+      console.log(result , error);
+      if (error)
         return res.send({
           success: "false",
           msg: "data not submitted",

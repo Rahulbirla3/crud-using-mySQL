@@ -14,28 +14,24 @@ import {
 } from "@mui/material";
 import React from "react";
 import { paths } from "../router/RouterReducer";
-import { Link } from "react-router-dom";
+import { Link , useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
+import { FETCH_WRAPPER } from "../api";
 
 function Signup() {
   const { register, handleSubmit } = useForm();
+  const navigate = useNavigate();
 
   const onSubmit = async (data) => {
-    // console.log(data);
-
-    const jsonData = JSON.stringify(data);
-    console.log(jsonData);
-
-    fetch("http://localhost:8000/v2/register", {
-      method: "post",
-      body: jsonData,
-      headers: {
-        "Content-Type": "application/json",
-      },
-    })
-      .then((result) => result.json())
-      .then((data) => alert(data.msg))
-      .catch((error) => console.log(error));
+    try {
+      const result = await FETCH_WRAPPER.post("register", {
+        ...data,
+      });
+      alert(result.data.msg);
+      navigate(paths.Login);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (
@@ -128,7 +124,6 @@ function Signup() {
                 row
                 aria-labelledby="demo-row-radio-buttons-group-label"
                 name="accesstype"
-                
               >
                 <FormControlLabel
                   value="admin"

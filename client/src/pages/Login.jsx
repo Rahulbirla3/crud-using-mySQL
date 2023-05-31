@@ -15,6 +15,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { paths } from "../router/RouterReducer";
 import RouterContext from "../router/RouterContext";
+import { FETCH_WRAPPER } from "../api";
 
 function Login() {
   const navigate = useNavigate();
@@ -27,25 +28,20 @@ function Login() {
   const { filterAllPath, filterCommonPath } = state;
 
   const onSubmit = async (data) => {
-    // console.log(data);
+    console.log(data);
     try {
-      const jsonData = JSON.stringify(data);
-
-      const apiData = await fetch("http://localhost:8000/v2/login", {
-        method: "POST",
-        body: jsonData,
-        headers: {
-          "Content-Type": "application/json",
-        },
+      // fetching data using axios
+      const apiData = await FETCH_WRAPPER.post("login", {
+        ...data,
       });
-      const respose = await apiData.json();
-      if (!respose.success) return alert(respose.msg);
+      console.log(apiData);
+      if (!apiData?.data.success) return alert(apiData?.data.msg);
 
-      console.log(respose);
-      updateData(respose.token, respose.result[0]?.accesstype);
-      localStorage.setItem("token", respose.token);
-      localStorage.setItem("accesstype", respose.result[0]?.accesstype);
-      localStorage.setItem("email", respose.result[0]?.email);
+      console.log(apiData?.data);
+      updateData(apiData?.data.token, apiData?.data.result[0]?.accesstype);
+      localStorage.setItem("token", apiData?.data.token);
+      localStorage.setItem("accesstype", apiData?.data.result[0]?.accesstype);
+      localStorage.setItem("email", apiData?.data.result[0]?.email);
       navigate(`${paths.Root}`);
     } catch (error) {
       console.log(error);
