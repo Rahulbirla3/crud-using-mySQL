@@ -5,13 +5,17 @@ import Tasks from "../components/Tasks";
 import Signup from "../pages/Signup";
 import RouterContext from "./RouterContext";
 import MechanicDetails from "../pages/MechanicDetails";
+import Home from "../pages/Home";
 import UserDetails from "../pages/UserDetails";
+import MechanicHistory from "../pages/MechanicHistory";
 
 const paths = {
   Root: "/",
   Tasks: "/tasks",
   Login: "/login",
   Signup: "/signup",
+  Home: "/home",
+  MechanicHistory: "/mechanichistory",
 };
 
 const reducer = (state, action) => {
@@ -29,6 +33,7 @@ const reducer = (state, action) => {
             name: "",
             path: "/",
             page: <Dashbord />,
+            NavShow: false,
           },
         ];
       }
@@ -39,21 +44,36 @@ const reducer = (state, action) => {
         updatedAllPath = [
           {
             name: "Mechanic Details",
-            path: "/mechanicdetails",
+            path: "/mechanicdetails/:id",
             page: <MechanicDetails />,
+            NavShow: true,
           },
           {
             name: "User Details",
             path: "/userdetails",
             page: <UserDetails />,
+            NavShow: true,
           },
         ];
       } else if (accesstype === "user") {
         updatedAllPath = [
           {
+            name: "Home",
+            path: "/home",
+            page: <Home />,
+            NavShow: true,
+          },
+          {
+            name: "Mechanic History",
+            path: "/mechanichistory",
+            page: <MechanicHistory />,
+            NavShow: false,
+          },
+          {
             name: "Task",
             path: "/tasks",
             page: <Tasks />,
+            NavShow: true,
           },
         ];
       } else if (accesstype === "mechanic") {
@@ -62,6 +82,7 @@ const reducer = (state, action) => {
             name: "Task",
             path: "/tasks",
             page: <Tasks />,
+            NavShow: true,
           },
         ];
       }

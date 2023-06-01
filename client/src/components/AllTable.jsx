@@ -1,7 +1,6 @@
 
 
 import React, { useState, useEffect, useMemo } from "react";
-import { FETCH_WRAPPER } from "../api";
 import { useTable } from "react-table";
 import {
   Table,

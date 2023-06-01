@@ -142,17 +142,21 @@ function Navbar() {
           </Typography>
           <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
             {/* Protected routes */}
-            {filterAllPath?.map((val, index) => (
-              <NavLink to={val.path}>
-                <Button
-                  key={index}
-                  onClick={handleCloseNavMenu}
-                  sx={{ my: 2, color: "white", display: "block" }}
-                >
-                  {val.name}
-                </Button>
-              </NavLink>
-            ))}
+            {filterAllPath?.map((val, index) => {
+              return (
+                val.NavShow && (
+                  <NavLink to={val.path}>
+                    <Button
+                      key={index}
+                      onClick={handleCloseNavMenu}
+                      sx={{ my: 2, color: "white", display: "block" }}
+                    >
+                      {val.name}
+                    </Button>
+                  </NavLink>
+                )
+              );
+            })}
             {/* Not protected Routes */}
             {filterCommonPath?.map((path, index) => (
               // if dashbord not show navbar button because for dashboard we use logo
