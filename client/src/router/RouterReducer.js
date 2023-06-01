@@ -5,6 +5,7 @@ import Tasks from "../components/Tasks";
 import Signup from "../pages/Signup";
 import RouterContext from "./RouterContext";
 import MechanicDetails from "../pages/MechanicDetails";
+import UserDetails from "../pages/UserDetails";
 
 const paths = {
   Root: "/",
@@ -40,6 +41,11 @@ const reducer = (state, action) => {
             name: "Mechanic Details",
             path: "/mechanicdetails",
             page: <MechanicDetails />,
+          },
+          {
+            name: "User Details",
+            path: "/userdetails",
+            page: <UserDetails />,
           },
         ];
       } else if (accesstype === "user") {
