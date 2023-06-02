@@ -7,7 +7,7 @@ import RouterContext from "./RouterContext";
 import MechanicDetails from "../pages/MechanicDetails";
 import Home from "../pages/Home";
 import UserDetails from "../pages/UserDetails";
-import MechanicHistory from "../pages/MechanicHistory";
+import SingleHistory from "../components/SingleHistory";
 
 const paths = {
   Root: "/",
@@ -15,7 +15,7 @@ const paths = {
   Login: "/login",
   Signup: "/signup",
   Home: "/home",
-  MechanicHistory: "/mechanichistory",
+  SingleHistory: "/singlehistory",
 };
 
 const reducer = (state, action) => {
@@ -30,10 +30,22 @@ const reducer = (state, action) => {
       if (token) {
         updatedCommonPath = [
           {
-            name: "",
+            name: "Dashbord",
             path: "/",
             page: <Dashbord />,
-            NavShow: false,
+            navshow: true,
+          },
+          {
+            name: "Single History",
+            path: "/singlehistory/:id",
+            page: <SingleHistory />,
+            navshow: false,
+          },
+          {
+            name: "Home",
+            path: "/home",
+            page: <Home />,
+            navshow: true,
           },
         ];
       }
@@ -46,34 +58,22 @@ const reducer = (state, action) => {
             name: "Mechanic Details",
             path: "/mechanicdetails/:id",
             page: <MechanicDetails />,
-            NavShow: true,
+            navshow: true,
           },
           {
             name: "User Details",
             path: "/userdetails",
             page: <UserDetails />,
-            NavShow: true,
+            navshow: true,
           },
         ];
       } else if (accesstype === "user") {
         updatedAllPath = [
           {
-            name: "Home",
-            path: "/home",
-            page: <Home />,
-            NavShow: true,
-          },
-          {
-            name: "Mechanic History",
-            path: "/mechanichistory",
-            page: <MechanicHistory />,
-            NavShow: false,
-          },
-          {
             name: "Task",
             path: "/tasks",
             page: <Tasks />,
-            NavShow: true,
+            navshow: true,
           },
         ];
       } else if (accesstype === "mechanic") {
@@ -82,7 +82,7 @@ const reducer = (state, action) => {
             name: "Task",
             path: "/tasks",
             page: <Tasks />,
-            NavShow: true,
+            navshow: true,
           },
         ];
       }

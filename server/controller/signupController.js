@@ -4,6 +4,7 @@ const db = require("../mySql/mySqlConnection");
 const userLoginController = (req, res) => {
   try {
     const { email, password } = req.body;
+    console.log(req.body);
     let select = `SELECT username , email , password , number , address , accesstype accesstype FROM singupdata WHERE email = '${email}'`;
 
     db.query(select, (error, result) => {

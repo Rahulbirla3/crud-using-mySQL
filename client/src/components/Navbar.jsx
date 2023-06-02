@@ -158,18 +158,24 @@ function Navbar() {
               );
             })}
             {/* Not protected Routes */}
-            {filterCommonPath?.map((path, index) => (
+            {filterCommonPath?.map((path, index) =>
               // if dashbord not show navbar button because for dashboard we use logo
-              <NavLink to={path.path}>
-                <Button
-                  key={index}
-                  onClick={handleCloseNavMenu}
-                  sx={{ my: 2, color: "white", display: "block" }}
-                >
-                  {path.name}
-                </Button>
-              </NavLink>
-            ))}
+              {
+                return (
+                  path.navshow && (
+                    <NavLink to={path.path}>
+                      <Button
+                        key={index}
+                        onClick={handleCloseNavMenu}
+                        sx={{ my: 2, color: "white", display: "block" }}
+                      >
+                        {path.name}
+                      </Button>
+                    </NavLink>
+                  )
+                );
+              }
+            )}
           </Box>
           {token ? (
             <Box>

@@ -13,15 +13,29 @@ import mechanic from "../Images/mechanicPhoto.jpg";
 import { paths } from "../router/RouterReducer";
 import { useNavigate } from "react-router-dom";
 import { FETCH_WRAPPER } from "../api";
+import Price from "../components/Price";
+import Products from "../components/Products";
 
 const Home = () => {
   const navigate = useNavigate();
   const [apiData, setApiData] = useState([]);
+  const [allProducts, setAllProducts] = useState([]);
 
   useEffect(() => {
     (async () => {
+      // getting Top Mechanic
       const users = await FETCH_WRAPPER("gettopmechanic");
       setApiData(users?.data?.arr);
+      //End getting Top Mechanic
+
+      // getting Products
+      const allProducts = await FETCH_WRAPPER(
+        "https://fakestoreapi.com/products"
+      );
+      setAllProducts(allProducts);
+      // End getting Products
+
+      //
     })();
   }, []);
 
@@ -72,7 +86,7 @@ const Home = () => {
                 <Button
                   size="small"
                   onClick={() => {
-                    navigate(`${paths.MechanicHistory}/${val.sno}`);
+                    navigate(`${paths.SingleHistory}/${val.sno}`);
                   }}
                 >
                   View More
@@ -83,6 +97,13 @@ const Home = () => {
           {/* Card End  */}
         </div>
       </Box>
+
+      {/* price component */}
+      <Price />
+      {/* End price component */}
+      {/* Products component */}
+      <Products allProducts={allProducts} />
+      {/* End Products component */}
     </>
   );
 };
