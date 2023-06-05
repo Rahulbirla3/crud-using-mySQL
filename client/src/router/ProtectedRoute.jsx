@@ -4,9 +4,7 @@ import { paths } from "./RouterReducer";
 
 const ProtectedRoute = () => {
   let jwt = localStorage.getItem("token");
-
   console.log("jwt");
-
   return !jwt ? <Navigate to={paths.Login} /> : <Outlet />;
 };
 

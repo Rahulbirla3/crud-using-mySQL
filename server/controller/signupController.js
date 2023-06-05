@@ -8,6 +8,7 @@ const userLoginController = (req, res) => {
     let select = `SELECT username , email , password , number , address , accesstype accesstype FROM singupdata WHERE email = '${email}'`;
 
     db.query(select, (error, result) => {
+      console.log('result123' , result?.[0] );
       if (!result)
         return res.send({ success: false, msg: "user does not exists", error });
       if (result[0]?.email !== email) {

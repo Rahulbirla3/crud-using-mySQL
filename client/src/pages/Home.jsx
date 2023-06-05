@@ -23,23 +23,24 @@ const Home = () => {
 
   useEffect(() => {
     (async () => {
-      // getting Top Mechanic
-      const users = await FETCH_WRAPPER("gettopmechanic");
-      setApiData(users?.data?.arr);
-      //End getting Top Mechanic
+      try {
+        // getting Top Mechanic
+        const users = await FETCH_WRAPPER("gettopmechanic");
+        setApiData(users?.data?.arr);
+        //End getting Top Mechanic
 
-      // getting Products
-      const allProducts = await FETCH_WRAPPER(
-        "https://fakestoreapi.com/products"
-      );
-      setAllProducts(allProducts);
-      // End getting Products
-
+        // getting Products
+        const allProducts = await FETCH_WRAPPER(
+          "https://fakestoreapi.com/products"
+        );
+        setAllProducts(allProducts);
+        // End getting Products
+      } catch (error) {
+        console.log(error);
+      }
       //
     })();
   }, []);
-
-  console.log(apiData);
 
   return (
     <>

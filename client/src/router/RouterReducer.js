@@ -7,7 +7,7 @@ import RouterContext from "./RouterContext";
 import MechanicDetails from "../pages/MechanicDetails";
 import Home from "../pages/Home";
 import UserDetails from "../pages/UserDetails";
-import SingleHistory from "../components/SingleHistory";
+import SingleHistory from "../pages/SingleHistory";
 
 const paths = {
   Root: "/",
