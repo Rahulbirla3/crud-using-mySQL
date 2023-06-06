@@ -16,13 +16,31 @@ import AdbIcon from "@mui/icons-material/Adb";
 import { useContext } from "react";
 import RouterContext from "../router/RouterContext";
 import { paths } from "../router/RouterReducer";
+import { Badge, Icon } from "@mui/material";
+import ShoppingCartCheckoutIcon from "@mui/icons-material/ShoppingCartCheckout";
+import { FETCH_WRAPPER } from "../api";
+import { useDispatch, useSelector } from "react-redux";
+import { cardLength, cartProducts } from "../Redux/cartSlice";
 
 const pages = ["Products", "Pricing", "Blog"];
 const settings = ["Profile", "Account", "Dashboard", "Logout"];
 
 function Navbar() {
-  const [anchorElNav, setAnchorElNav] = React.useState(null);
-  const [anchorElUser, setAnchorElUser] = React.useState(null);
+  const [anchorElNav, setAnchorElNav] = useState(null);
+  const [anchorElUser, setAnchorElUser] = useState(null);
+  const [email, setEmail] = useState(localStorage.getItem("email"));
+
+  //store
+
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(cardLength());
+  }, []);
+
+  const { cardNumber } = useSelector((store) => store.carts);
+
+  //End store
 
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
@@ -178,14 +196,21 @@ function Navbar() {
             )}
           </Box>
           {token ? (
-            <Box>
-              <Button
-                onClick={handleLogout}
-                sx={{ my: 2, color: "white", display: "block" }}
-              >
-                Logout
+            <>
+              <Box>
+                <Button
+                  onClick={handleLogout}
+                  sx={{ mx: 0, color: "white", display: "block" }}
+                >
+                  Logout
+                </Button>
+              </Box>
+              <Button sx={{ mx: 2 }} onClick={() => navigate(paths.Cart)}>
+                <Badge badgeContent={cardNumber} style={{ color: "white" }}>
+                  <ShoppingCartCheckoutIcon style={{ color: "white" }} />
+                </Badge>
               </Button>
-            </Box>
+            </>
           ) : (
             ""
           )}

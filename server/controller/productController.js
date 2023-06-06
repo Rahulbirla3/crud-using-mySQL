@@ -3,15 +3,15 @@ const db = require("../mySql/mySqlConnection");
 // const getAllProductController = (req, res) => {};
 
 const addToCartProductController = (req, res) => {
-  const { name, email, price, count } = req.body;
   console.log(req.body);
+  const { name, email, price, count } = req.body;
+
+  const select = `INSERT INTO addtocart (name , email , price , count) VALUES ('${name}' , '${email}', '${price}', '${count}')`;
 
   try {
-    const select = `INSERT INTO addtocart (name , email , price , count) VALUES ('${name}' , '${email}', '${price}', '${count}')`;
-
     db.query(select, (error, result) => {
       console.log(result);
-      if (!result)
+      if (error)
         return res.send({
           success: "false",
           msg: "data not submitted",

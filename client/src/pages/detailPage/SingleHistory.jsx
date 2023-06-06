@@ -6,7 +6,6 @@ import {
   Container,
   FormControlLabel,
   FormLabel,
-  IconButton,
   Radio,
   RadioGroup,
   Stack,
@@ -15,13 +14,12 @@ import {
 } from "@mui/material";
 import { makeStyles } from "@mui/styles";
 import FavoriteBorderRoundedIcon from "@mui/icons-material/FavoriteBorderRounded";
-import ShoppingBasketIcon from "@mui/icons-material/ShoppingBasket";
-import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
+
 import React, { useState, useEffect } from "react";
-import services from "../Images/services.jpg";
 import { useLocation } from "react-router-dom";
-import { FETCH_WRAPPER } from "../api";
+import { FETCH_WRAPPER } from "../../api";
 import axios from "axios";
+import Buttons from "./Buttons";
 
 const useStyles = makeStyles({
   center: {
@@ -36,8 +34,10 @@ const SingleHistory = () => {
   const classes = useStyles();
 
   // State
-  const [apiData, setApiData] = useState();
-  const [count, setCount] = useState(0);
+  const [apiData, setApiData] = useState([]);
+  const [count, setCount] = useState(1);
+  const [radio, setRadio] = useState("");
+  const [email, setEmail] = useState(localStorage.getItem("email"));
 
   const location = useLocation();
   console.log(location.pathname);
@@ -59,6 +59,16 @@ const SingleHistory = () => {
   }, []);
 
   console.log(apiData);
+  const postData = {
+    name: apiData.title,
+    rating: apiData.rating?.rate,
+    price: apiData.price,
+    size: radio,
+    count: count,
+    email: email,
+  };
+
+  console.log(postData);
 
   return (
     <>
@@ -85,7 +95,7 @@ const SingleHistory = () => {
           >
             <Typography variant="p">{apiData?.category}</Typography>
 
-            <Typography variant="h4">{apiData?.title.slice(0, 10)}</Typography>
+            <Typography variant="h4">{apiData?.title?.slice(0, 10)}</Typography>
             <Box display="flex" gap={4}>
               <Typography variant="p">{apiData?.rating?.rate}</Typography>
               <Button startIcon={<FavoriteBorderRoundedIcon />} variant="p">
@@ -102,6 +112,7 @@ const SingleHistory = () => {
                   row
                   aria-labelledby="demo-row-radio-buttons-group-label"
                   name="row-radio-buttons-group"
+                  onChange={(e) => setRadio(e.target.value)}
                 >
                   <FormControlLabel
                     value="small"
@@ -144,18 +155,10 @@ const SingleHistory = () => {
                 +
               </Button>
             </Toolbar>
-            <Toolbar display="flex" style={{ justifyContent: "space-between" }}>
-              <Button
-                variant="outlined"
-                style={{ marginRight: "10px" }}
-                startIcon={<ShoppingBasketIcon />}
-              >
-                Buy
-              </Button>
-              <Button variant="contained" endIcon={<ShoppingCartIcon />}>
-                Add to Cart
-              </Button>
-            </Toolbar>
+
+            {/* add to cart and buy button is added */}
+            <Buttons postData={postData} />
+            {/*End add to cart and buy button is added */}
           </Stack>
         </Toolbar>
       </Container>

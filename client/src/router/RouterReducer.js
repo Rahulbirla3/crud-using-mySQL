@@ -7,7 +7,8 @@ import RouterContext from "./RouterContext";
 import MechanicDetails from "../pages/MechanicDetails";
 import Home from "../pages/Home";
 import UserDetails from "../pages/UserDetails";
-import SingleHistory from "../pages/SingleHistory";
+import SingleHistory from "../pages/detailPage/SingleHistory";
+import Cart from "../pages/Cart";
 
 const paths = {
   Root: "/",
@@ -16,6 +17,7 @@ const paths = {
   Signup: "/signup",
   Home: "/home",
   SingleHistory: "/singlehistory",
+  Cart: "/cart",
 };
 
 const reducer = (state, action) => {
@@ -46,6 +48,12 @@ const reducer = (state, action) => {
             path: "/home",
             page: <Home />,
             navshow: true,
+          },
+          {
+            name: "Cart",
+            path: "/cart",
+            page: <Cart />,
+            navshow: false,
           },
         ];
       }

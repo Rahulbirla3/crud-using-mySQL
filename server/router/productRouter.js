@@ -6,6 +6,6 @@ const {
 const productRouter = express.Router();
 
 productRouter.post("/addcart", addToCartProductController);
-productRouter.get("/getcart", getCartDataController);
+productRouter.post("/getcart", getCartDataController);
 
 module.exports = productRouter;
