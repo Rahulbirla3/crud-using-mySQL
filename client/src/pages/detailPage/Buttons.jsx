@@ -16,12 +16,15 @@ const Buttons = ({ postData }) => {
       const result = await FETCH_WRAPPER.post("addcart", { ...postData });
       console.log(result);
       alert(result.data.msg);
-      dispatch(cartProducts(postData));
+      if (result) {
+        const result = await FETCH_WRAPPER.post("getcart", { ...postData });
+        console.log(result);
+        dispatch(cartProducts(result.data.result));
+      }
     } catch (error) {
       console.log(error);
     }
   };
-
 
   return (
     <>

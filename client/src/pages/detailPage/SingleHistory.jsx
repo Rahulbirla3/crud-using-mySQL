@@ -60,6 +60,7 @@ const SingleHistory = () => {
 
   console.log(apiData);
   const postData = {
+    sno: apiData.id,
     name: apiData.title,
     rating: apiData.rating?.rate,
     price: apiData.price,
