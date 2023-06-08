@@ -27,7 +27,7 @@ const reducer = (state, action) => {
     case "updateData":
       let updatedAllPath = state.allPath;
       let updatedCommonPath = state.commonPath;
-      console.log(token);
+      // console.log(token);
       // accoring to the login we show navbar buttons
       if (token) {
         updatedCommonPath = [
@@ -35,7 +35,7 @@ const reducer = (state, action) => {
             name: "Dashbord",
             path: "/",
             page: <Dashbord />,
-            navshow: true,
+            navshow: false,
           },
           {
             name: "Single History",
@@ -54,6 +54,12 @@ const reducer = (state, action) => {
             path: "/cart",
             page: <Cart />,
             navshow: false,
+          },
+          {
+            name: "Task",
+            path: "/tasks",
+            page: <Tasks />,
+            navshow: true,
           },
         ];
       }
@@ -76,24 +82,14 @@ const reducer = (state, action) => {
           },
         ];
       } else if (accesstype === "user") {
-        updatedAllPath = [
-          {
-            name: "Task",
-            path: "/tasks",
-            page: <Tasks />,
-            navshow: true,
-          },
-        ];
+        updatedAllPath = [];
       } else if (accesstype === "mechanic") {
         updatedAllPath = [
-          {
-            name: "Task",
-            path: "/tasks",
-            page: <Tasks />,
-            navshow: true,
-          },
+         
         ];
       }
+
+      // console.log("98" , updatedAllPath);
 
       return {
         ...state,

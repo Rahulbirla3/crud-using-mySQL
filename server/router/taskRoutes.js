@@ -10,9 +10,9 @@ const taskRouter = express.Router();
 
 
 
-taskRouter.get("/getTasks", verifyToken, getTasksController);
+taskRouter.get("/getTasks", verifyToken , getTasksController);
 taskRouter.post("/createTask", verifyToken, createTaskController);
-taskRouter.delete("/deleteTask", verifyToken, taskDeleteController);
+taskRouter.delete("/deleteTask/:id", verifyToken, taskDeleteController);
 taskRouter.put("/editTask", verifyToken, taskEditController);
 
 module.exports = taskRouter;

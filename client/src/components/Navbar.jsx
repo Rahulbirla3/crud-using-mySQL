@@ -31,7 +31,6 @@ function Navbar() {
   const [email, setEmail] = useState(localStorage.getItem("email"));
 
   //store
-
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -63,6 +62,8 @@ function Navbar() {
 
   const { state, updateData } = useContext(RouterContext);
   const { filterAllPath, filterCommonPath } = state;
+
+  console.log("66", filterAllPath);
 
   const handleLogout = () => {
     localStorage.clear();
@@ -159,22 +160,6 @@ function Navbar() {
             LOGO
           </Typography>
           <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
-            {/* Protected routes */}
-            {filterAllPath?.map((val, index) => {
-              return (
-                val.NavShow && (
-                  <NavLink to={val.path}>
-                    <Button
-                      key={index}
-                      onClick={handleCloseNavMenu}
-                      sx={{ my: 2, color: "white", display: "block" }}
-                    >
-                      {val.name}
-                    </Button>
-                  </NavLink>
-                )
-              );
-            })}
             {/* Not protected Routes */}
             {filterCommonPath?.map((path, index) =>
               // if dashbord not show navbar button because for dashboard we use logo
@@ -194,6 +179,23 @@ function Navbar() {
                 );
               }
             )}
+
+            {/* Protected routes */}
+            {filterAllPath?.map((val, index) => {
+              return (
+                val.navshow && (
+                  <NavLink to={val.path}>
+                    <Button
+                      key={index}
+                      onClick={handleCloseNavMenu}
+                      sx={{ my: 2, color: "white", display: "block" }}
+                    >
+                      {val.name}
+                    </Button>
+                  </NavLink>
+                )
+              );
+            })}
           </Box>
           {token ? (
             <>

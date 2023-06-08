@@ -8,7 +8,7 @@ const userLoginController = (req, res) => {
     let select = `SELECT username , email , password , number , address , accesstype accesstype FROM singupdata WHERE email = '${email}'`;
 
     db.query(select, (error, result) => {
-      console.log('result123' , result?.[0] );
+      console.log("result123", result?.[0]);
       if (!result)
         return res.send({ success: false, msg: "user does not exists", error });
       if (result[0]?.email !== email) {
@@ -24,7 +24,11 @@ const userLoginController = (req, res) => {
           msg: "email and password is not matched",
         });
       }
-      const token = jwt.sign(email, "iamusingjsonwebtoken");
+      console.log(result[0]?.accesstype);
+      const token = jwt.sign(
+        { email: email , accesstype: result[0]?.accesstype },
+        "iamusingjsonwebtoken"
+      );
       console.log(token);
       res.send({
         success: true,
@@ -50,7 +54,7 @@ const userRegisterController = (req, res) => {
     let insertData = `INSERT INTO singupdata (username , email , password , number , address , accesstype) VALUES ('${username}' ,'${email}' , '${password}', '${number}' ,'${address}','${accesstype}')`;
 
     db.query(insertData, (error, result) => {
-      console.log(result , error);
+      console.log(result, error);
       if (error)
         return res.send({
           success: "false",

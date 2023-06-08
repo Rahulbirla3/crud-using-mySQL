@@ -11,8 +11,10 @@ const verifyToken = (req, res, next) => {
   const user = jwt.verify(token, "iamusingjsonwebtoken");
 
   if (!user) return res.send({ success: "false", msg: "user is not found" });
+  const decoded = jwt.decode(token);
 
-  console.log(user);
+  req.accesstype = decoded.accesstype;
+  req.email = decoded.email;
 
   next();
 };

@@ -11,7 +11,7 @@ const cardSlice = createSlice({
       state.cardProductsArr = [...action.payload];
       state.cardNumber = state.cardProductsArr.length;
     },
-    cardLength: (state, payload) => {
+    cardLength: (state, action) => {
       state.cardNumber = state.cardProductsArr.length;
     },
   },

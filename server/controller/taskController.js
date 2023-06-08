@@ -2,39 +2,50 @@ const db = require("../mySql/mySqlConnection");
 
 const createTaskController = (req, res) => {
   const { email, title, description } = req.body;
-  console.log(req.body);
+  // console.log(req.body);
 
-  const postData = `INSERT INTO tasktable (email , title , description) VALUES ("${email}", "${title}" ,"${description}")`;
+  try {
+    const postData = `INSERT INTO tasktable (email , title , description) VALUES ("${email}", "${title}" ,"${description}")`;
 
-  db.query(postData, (error, result) => {
-    if (error) return res.send(error);
-    res
-      .status(200)
-      .send({ msg: "data is saved successfully", success: "true", result });
-  });
+    db.query(postData, (error, result) => {
+      console.log(postData);
+      if (!result) return res.send(error);
+      res
+        .status(200)
+        .send({ msg: "data is saved successfully", success: "true", result });
+    });
+  } catch (error) {
+    console.log(error);
+  }
 };
 
 const getTasksController = (req, res) => {
-  //   const { email } = req.body;
+  try {
+    // email is comes in jwt token
+    const selectTask =
+      req.accesstype === "admin"
+        ? "SELECT * FROM tasktable"
+        : `SELECT * FROM tasktable WHERE email='${req.email}'`;
 
-  // email is comes in jwt token
-
-  const selectTask = "SELECT * FROM tasktable WHERE email='12@gmail.com'";
-
-  db.query(selectTask, (error, result) => {
-    if (error) return res.status(500).send(error);
-
-    res.status(200).send({ msg: "all user Tasks", success: "false", result });
-  });
+    db.query(selectTask, (error, result) => {
+      console.log("31", result);
+      if (!result) return res.status(500).send(error);
+      res
+        .status(200)
+        .send({ msg: "all user Tasks", success: "true", result, error });
+    });
+  } catch (error) {
+    console.log(error);
+  }
 };
 
 const taskEditController = (req, res) => {
-  const {title , description } = req.body;
+  const { title, description , sno } = req.body;
 
   console.log(req.body);
-// here sno is id we can get from frontend
+  // here sno is id we can get from frontend
 
-  const updateQuery = `UPDATE tasktable SET title='${title}', description='${description}' WHERE sno='${1}'`;
+  const updateQuery = `UPDATE tasktable SET title='${title}', description='${description}' WHERE sno='${sno}'`;
 
   db.query(updateQuery, (error, result) => {
     if (error) return res.status(500).send(error);
@@ -45,10 +56,10 @@ const taskEditController = (req, res) => {
 };
 
 const taskDeleteController = (req, res) => {
+  // here sno is id we can get from frontend
+  console.log(req.params.id);
 
-// here sno is id we can get from frontend
-
-  const updateQuery = `DELETE FROM tasktable WHERE sno=1`;
+  const updateQuery = `DELETE FROM tasktable WHERE sno=${req.params.id}`;
 
   db.query(updateQuery, (error, result) => {
     if (error) return res.status(500).send(error);
