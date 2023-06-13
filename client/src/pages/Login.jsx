@@ -16,16 +16,19 @@ import { useForm } from "react-hook-form";
 import { paths } from "../router/RouterReducer";
 import RouterContext from "../router/RouterContext";
 import { FETCH_WRAPPER } from "../api";
+import { toast } from "react-toastify";
+import loginSchema from "../validation/schema";
+import { yupResolver } from "@hookform/resolvers/yup";
 
 function Login() {
   const navigate = useNavigate();
-  const { register, handleSubmit } = useForm();
-
-  const accesstype = localStorage.getItem("accesstype");
-  const token = localStorage.getItem("token");
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm();
 
   const { state, updateData } = useContext(RouterContext);
-  const { filterAllPath, filterCommonPath } = state;
 
   const onSubmit = async (data) => {
     console.log(data);
@@ -35,13 +38,22 @@ function Login() {
         ...data,
       });
       console.log(apiData);
-      if (!apiData?.data.success) return alert(apiData?.data.msg);
+      if (!apiData?.data.success) return toast(apiData?.data.msg);
 
       console.log(apiData?.data);
       updateData(apiData?.data.token, apiData?.data.result[0]?.accesstype);
       localStorage.setItem("token", apiData?.data.token);
       localStorage.setItem("accesstype", apiData?.data.result[0]?.accesstype);
       localStorage.setItem("email", apiData?.data.result[0]?.email);
+      // cartlength value set code
+
+      const result = await FETCH_WRAPPER.get(
+        `getcart/${apiData?.data.result[0]?.email}`
+      );
+      console.log(result);
+      localStorage.setItem("cartlength", result.data.result.length);
+
+      // End cartlength value set code
       navigate(`${paths.Root}`);
     } catch (error) {
       console.log(error);
@@ -80,6 +92,11 @@ function Login() {
                 autoComplete="family-name"
                 {...register("email")}
               />
+              {errors.email ? (
+                <Typography>{errors.email.message}</Typography>
+              ) : (
+                ""
+              )}
             </Grid>
             <Grid item xs={12}>
               <TextField

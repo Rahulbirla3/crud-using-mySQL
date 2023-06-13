@@ -55,6 +55,7 @@ function Navbar() {
   const navigate = useNavigate();
   const accesstype = localStorage?.getItem("accesstype");
   const token = localStorage?.getItem("token");
+  const cartlength = localStorage?.getItem("cartlength");
 
   useEffect(() => {
     updateData(token, accesstype);
@@ -63,7 +64,7 @@ function Navbar() {
   const { state, updateData } = useContext(RouterContext);
   const { filterAllPath, filterCommonPath } = state;
 
-  console.log("66", filterAllPath);
+  // console.log("66", filterCommonPath);
 
   const handleLogout = () => {
     localStorage.clear();
@@ -166,7 +167,7 @@ function Navbar() {
               {
                 return (
                   path.navshow && (
-                    <NavLink to={path.path}>
+                    <NavLink to={path.path} key={index} >
                       <Button
                         key={index}
                         onClick={handleCloseNavMenu}
@@ -208,7 +209,7 @@ function Navbar() {
                 </Button>
               </Box>
               <Button sx={{ mx: 2 }} onClick={() => navigate(paths.Cart)}>
-                <Badge badgeContent={cardNumber} style={{ color: "white" }}>
+                <Badge badgeContent={cartlength} style={{ color: "white" }}>
                   <ShoppingCartCheckoutIcon style={{ color: "white" }} />
                 </Badge>
               </Button>

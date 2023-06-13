@@ -9,6 +9,7 @@ import Home from "../pages/Home";
 import UserDetails from "../pages/UserDetails";
 import SingleHistory from "../pages/detailPage/SingleHistory";
 import Cart from "../pages/Cart";
+import FavTask from "../components/FavTask";
 
 const paths = {
   Root: "/",
@@ -38,16 +39,16 @@ const reducer = (state, action) => {
             navshow: false,
           },
           {
-            name: "Single History",
-            path: "/singlehistory/:id",
-            page: <SingleHistory />,
-            navshow: false,
-          },
-          {
             name: "Home",
             path: "/home",
             page: <Home />,
             navshow: true,
+          },
+          {
+            name: "Single History",
+            path: "/singlehistory/:id",
+            page: <SingleHistory />,
+            navshow: false,
           },
           {
             name: "Cart",
@@ -59,6 +60,12 @@ const reducer = (state, action) => {
             name: "Task",
             path: "/tasks",
             page: <Tasks />,
+            navshow: true,
+          },
+          {
+            name: "FavTask",
+            path: "/favtask",
+            page: <FavTask />,
             navshow: true,
           },
         ];
@@ -84,9 +91,7 @@ const reducer = (state, action) => {
       } else if (accesstype === "user") {
         updatedAllPath = [];
       } else if (accesstype === "mechanic") {
-        updatedAllPath = [
-         
-        ];
+        updatedAllPath = [];
       }
 
       // console.log("98" , updatedAllPath);
@@ -108,17 +113,21 @@ const RouterReducer = (props) => {
         name: "Dashbord",
         path: "/",
         page: <Dashbord />,
+        navshow: false,
       },
       {
         name: "Signup",
         path: "/signup",
         page: <Signup />,
+        navshow: true,
       },
       {
         name: "Login",
         path: "/login",
         page: <Login />,
+        navshow: true,
       },
+      
     ],
     allPath: [],
     filterAllPath: [],

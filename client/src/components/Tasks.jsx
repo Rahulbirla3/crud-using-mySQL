@@ -13,6 +13,7 @@ import { FETCH_WRAPPER } from "../api";
 import TaskList from "./TaskList";
 import { useDispatch } from "react-redux";
 import { addApiData } from "../Redux/taskSlice";
+import { toast } from "react-toastify";
 
 const Tasks = () => {
   const dispatch = useDispatch();
@@ -24,7 +25,7 @@ const Tasks = () => {
   // function for store the data inside the store
   const getTask = async () => {
     try {
-      const result = await FETCH_WRAPPER.get("getTasks", {
+      const result = await FETCH_WRAPPER.get(`getTasks/${email}`, {
         headers: {
           Authorization: token,
         },
@@ -56,10 +57,10 @@ const Tasks = () => {
       );
       console.log(result);
       if (!result) {
-        return alert(result.data.msg);
+        return toast(result.data.msg);
       }
       getTask();
-      return alert(result.data.msg);
+      return toast(result.data.msg);
     } catch (error) {
       console.log(error);
     }

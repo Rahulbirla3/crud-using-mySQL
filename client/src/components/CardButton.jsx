@@ -9,17 +9,23 @@ import { useForm } from "react-hook-form";
 import { FETCH_WRAPPER } from "./../api/index";
 import { useDispatch } from "react-redux";
 import { addApiData, getTask } from "../Redux/taskSlice";
-
+import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
+import FavoriteIcon from "@mui/icons-material/Favorite";
+// for notification
+import { toast } from "react-toastify";
+// for notification
 const CardButton = ({ val }) => {
   const [isEdit, setIsEdit] = useState(false);
+  const [likeTask, setlikeTask] = useState(false);
   const { register, handleSubmit } = useForm();
   const token = localStorage.getItem("token");
+  const email = localStorage.getItem("email");
   const dispatch = useDispatch();
 
   //   get the data
   const getTask = async () => {
     try {
-      const result = await FETCH_WRAPPER.get("getTasks", {
+      const result = await FETCH_WRAPPER.get(`getTasks/${email}`, {
         headers: {
           Authorization: token,
         },
@@ -33,6 +39,7 @@ const CardButton = ({ val }) => {
 
   const onSubmit = async (data) => {
     const obj = { sno: val.sno, ...data };
+    console.log("42", obj);
     try {
       const result = await FETCH_WRAPPER.put(
         "editTask",
@@ -44,7 +51,7 @@ const CardButton = ({ val }) => {
         }
       );
       if (!result) return console.log(result);
-      alert("success");
+      toast("success");
       // store data inside the store
       getTask();
       setIsEdit(!isEdit);
@@ -62,10 +69,36 @@ const CardButton = ({ val }) => {
       const data = await FETCH_WRAPPER.delete(`deleteTask/${val.sno}`);
       console.log(data);
       if (!data) {
-        alert("data not submitted");
+        toast("data not submitted");
       }
-      alert("data Deleted successfuly");
+      toast("data Deleted successfuly");
       getTask();
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  // like the task
+  const likeTaskFun = async (bool) => {
+    let obj = { ...val, sno: val.sno, liketask: bool };
+    try {
+      const result = await FETCH_WRAPPER.put(
+        "editTask",
+        { ...obj },
+        {
+          headers: {
+            Authorization: token,
+          },
+        }
+      );
+
+      // console.log("rsult", result);
+      if (!result) return console.log(result);
+      toast("success");
+      // store data inside the store
+      getTask();
+      //End store data inside the store
+      setlikeTask(!likeTask);
     } catch (error) {
       console.log(error);
     }
@@ -82,9 +115,18 @@ const CardButton = ({ val }) => {
           <EditIcon />
         </IconButton>
       )}
-      <IconButton>
-        <DeleteForeverIcon onClick={() => handleDelete(val)} />
+      <IconButton onClick={() => handleDelete(val)}>
+        <DeleteForeverIcon />
       </IconButton>
+      {!likeTask ? (
+        <IconButton onClick={() => likeTaskFun(false)}>
+          <FavoriteIcon />
+        </IconButton>
+      ) : (
+        <IconButton onClick={() => likeTaskFun(true)}>
+          <FavoriteBorderIcon />
+        </IconButton>
+      )}
       <Card sx={{ maxWidth: "300px", p: 4 }}>
         <Stack gap={0.7}>
           <Typography>{val.email}</Typography>

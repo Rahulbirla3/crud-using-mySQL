@@ -78,7 +78,9 @@ const Products = ({ allProducts }) => {
                     <Button size="small">Price :{val?.price}</Button>
                     <Button
                       size="small"
-                      onClick={() => navigate(`${paths.SingleHistory}/${val?.id}`)}
+                      onClick={() =>
+                        navigate(`${paths.SingleHistory}/${val?.id}`)
+                      }
                     >
                       view More
                     </Button>

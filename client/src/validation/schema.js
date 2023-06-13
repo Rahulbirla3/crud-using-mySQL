@@ -1,9 +1,10 @@
-import * as Yup from 'yup';
+import * as Yup from "yup";
 
-const loginSchema = Object({
-  email: Yup.string().email().required("please fill the value"),
-  password: Yup.number().positive().integer().required("please fill the value"),
+const loginSchema = Yup.object().shape({
+  email: Yup.string().required("Email is required").email("Invalid email"),
+  password: Yup.string()
+    .required("Password is required")
+    .min(6, "Password must be at least 6 characters"),
 });
-
 
 export default loginSchema;

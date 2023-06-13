@@ -16,27 +16,27 @@ import { cartProducts } from "../Redux/cartSlice";
 
 const Cart = () => {
   const [email, setEmail] = useState(localStorage.getItem("email"));
-  console.log(email);
 
   // redux
   const dispatch = useDispatch();
-  const {cardProductsArr}  = useSelector((store) => store.carts);
+  const { cardProductsArr } = useSelector((store) => store.carts);
 
   // End redux
 
   useEffect(() => {
     try {
       (async () => {
-        const result = await FETCH_WRAPPER.post("getcart", { email });
+        const result = await FETCH_WRAPPER.get(`getcart/${email}`);
         if (result) {
+          console.log(result.data.result);
           dispatch(cartProducts(result.data.result));
+          localStorage.setItem("cartlength", result.data.result.length);
         }
       })();
     } catch (error) {
       console.log(error);
     }
   }, []);
-
 
   // Table data
 
@@ -71,7 +71,6 @@ const Cart = () => {
     ],
     []
   );
-
 
   const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } =
     useTable({ columns, data });

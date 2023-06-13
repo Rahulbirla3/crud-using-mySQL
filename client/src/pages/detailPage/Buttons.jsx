@@ -5,6 +5,7 @@ import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import { FETCH_WRAPPER } from "../../api";
 import { useDispatch } from "react-redux";
 import { cartProducts } from "../../Redux/cartSlice";
+import { toast } from "react-toastify";
 
 const Buttons = ({ postData }) => {
   //   const navigate = useNavigate();
@@ -15,11 +16,12 @@ const Buttons = ({ postData }) => {
     try {
       const result = await FETCH_WRAPPER.post("addcart", { ...postData });
       console.log(result);
-      alert(result.data.msg);
+      toast(result.data.msg);
       if (result) {
-        const result = await FETCH_WRAPPER.post("getcart", { ...postData });
+        const result = await FETCH_WRAPPER.get(`getcart/${postData.email}`);
         console.log(result);
         dispatch(cartProducts(result.data.result));
+        localStorage.setItem("cartlength", result.data.result.length);
       }
     } catch (error) {
       console.log(error);

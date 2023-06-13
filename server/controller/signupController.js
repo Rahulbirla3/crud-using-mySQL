@@ -14,14 +14,14 @@ const userLoginController = (req, res) => {
       if (result[0]?.email !== email) {
         return res.send({
           success: false,
-          msg: "email and password is not matched",
+          msg: "email is not matched",
         });
       }
       console.log(password);
       if (result[0]?.password !== password) {
         return res.send({
           success: false,
-          msg: "email and password is not matched",
+          msg: "password is not matched",
         });
       }
       console.log(result[0]?.accesstype);

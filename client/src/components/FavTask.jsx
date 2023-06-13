@@ -1,12 +1,17 @@
-import { Box, Card, Container, Grid, Stack, Typography } from "@mui/material";
-import React from "react";
-import { useSelector } from "react-redux";
+import React, { useEffect, useState } from "react";
+import { FETCH_WRAPPER } from "../api";
+import { Box, Container, Grid } from "@mui/material";
 import CardButton from "./CardButton";
 
-const TaskList = () => {
-  const { taskApiData } = useSelector((store) => store.tasks);
+const FavTask = () => {
+  const [favTask, setFavTask] = useState([]);
 
-  // console.log(taskApiData);
+  useEffect(() => {
+    (async () => {
+      const apiData = await FETCH_WRAPPER(`getFavTasks`);
+      setFavTask(apiData.data.result);
+        })();
+  }, []);
 
   return (
     <>
@@ -18,11 +23,11 @@ const TaskList = () => {
             flexWrap: "wrap",
             justifyContent: "center",
             alignItems: "center",
-            height: "60vh", 
+            height: "60vh",
           }}
         >
           {/* Start */}
-          {taskApiData?.map((val, index) => {
+          {favTask?.map((val, index) => {
             return (
               <Box
                 key={index}
@@ -49,4 +54,4 @@ const TaskList = () => {
   );
 };
 
-export default TaskList;
+export default FavTask;

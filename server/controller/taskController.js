@@ -25,10 +25,10 @@ const getTasksController = (req, res) => {
     const selectTask =
       req.accesstype === "admin"
         ? "SELECT * FROM tasktable"
-        : `SELECT * FROM tasktable WHERE email='${req.email}'`;
+        : `SELECT * FROM tasktable WHERE email='${req.params.email}'`;
 
     db.query(selectTask, (error, result) => {
-      console.log("31", result);
+      // console.log("31", result);
       if (!result) return res.status(500).send(error);
       res
         .status(200)
@@ -39,13 +39,31 @@ const getTasksController = (req, res) => {
   }
 };
 
-const taskEditController = (req, res) => {
-  const { title, description , sno } = req.body;
+// get Favorite tasks Only
+const getFavoriteTaskController = (req, res) => {
+  try {
+    // email is comes in jwt token
+    const selectTask = "SELECT * FROM tasktable WHERE liketask='true'";
 
-  console.log(req.body);
+    db.query(selectTask, (error, result) => {
+      // console.log("31", result);
+      if (!result) return res.status(500).send(error);
+      res
+        .status(200)
+        .send({ msg: "all Favorite user Tasks", success: "true", result, error });
+    });
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+const taskEditController = (req, res) => {
+  const { title, description, sno, liketask } = req.body;
+  console.log("liketask", liketask);
+  // console.log(req.body);
   // here sno is id we can get from frontend
 
-  const updateQuery = `UPDATE tasktable SET title='${title}', description='${description}' WHERE sno='${sno}'`;
+  const updateQuery = `UPDATE tasktable SET title='${title}', description='${description}' , liketask='${liketask}' WHERE sno='${sno}'`;
 
   db.query(updateQuery, (error, result) => {
     if (error) return res.status(500).send(error);
@@ -74,4 +92,5 @@ module.exports = {
   createTaskController,
   taskDeleteController,
   taskEditController,
+  getFavoriteTaskController,
 };

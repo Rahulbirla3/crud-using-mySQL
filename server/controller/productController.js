@@ -7,7 +7,6 @@ const addToCartProductController = (req, res) => {
   const { sno, name, email, price, count } = req.body;
 
   const select = `SELECT sno,  name , email , price, count FROM addtocart WHERE name='${name}'`;
-
   let newCount = count;
 
   try {
@@ -15,10 +14,10 @@ const addToCartProductController = (req, res) => {
       let check = true;
       console.log("result16", result, error);
       // console.log(!error);
-      if (!error && result.length!==0) {
+      if (!error && result.length !== 0) {
         console.log("ENTERED");
         check = false;
-        console.log(typeof result[0]?.count , typeof count);
+        console.log(typeof result[0]?.count, typeof count);
         newCount = Number(count) + Number(result[0]?.count);
       }
 
@@ -51,11 +50,11 @@ const addToCartProductController = (req, res) => {
 };
 
 const getCartDataController = (req, res) => {
-  const { email } = req.body;
-  console.log(email);
+  console.log(req.params);
   try {
-    const select = `SELECT sno , name , email , price , count , date FROM addtocart WHERE email='${email}' `;
+    const select = `SELECT sno , name , email , price , count , date FROM addtocart WHERE email='${req.params.email}' `;
     db.query(select, (error, result) => {
+      console.log(result);  
       if (!result)
         return res.send({
           success: "false",

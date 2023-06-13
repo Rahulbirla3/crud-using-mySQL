@@ -17,6 +17,7 @@ import { paths } from "../router/RouterReducer";
 import { Link , useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { FETCH_WRAPPER } from "../api";
+import { toast } from "react-toastify";
 
 function Signup() {
   const { register, handleSubmit } = useForm();
@@ -27,7 +28,7 @@ function Signup() {
       const result = await FETCH_WRAPPER.post("register", {
         ...data,
       });
-      alert(result.data.msg);
+      toast(result.data.msg);
       navigate(paths.Login);
     } catch (error) {
       console.log(error);
@@ -56,7 +57,7 @@ function Signup() {
           sx={{ mt: 3 }}
         >
           <Grid container spacing={2}>
-            <Grid item xs={12} sx={{ display: "flex" }}>
+            <Grid item  sx={{ display: "flex" }}>
               <Grid item xs={{ xs: 6 }}>
                 <TextField
                   required
